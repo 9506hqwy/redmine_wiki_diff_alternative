@@ -1,0 +1,10 @@
+<!-- Wiki の Diff 表示 -->
+<%
+   if controller &&
+      controller.class.name == 'WikiController' &&
+      controller.action_name == 'diff' &&
+      @project.module_enabled?(:wiki_diff_alternative) &&
+      @diff.present?
+%>
+  <%= stylesheet_link_tag('scm') %>
+<% end %> <!-- if -->

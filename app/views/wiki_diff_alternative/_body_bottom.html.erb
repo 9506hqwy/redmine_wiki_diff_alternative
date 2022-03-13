@@ -1,0 +1,53 @@
+<!-- Wiki の Diff 表示 -->
+<%
+   if controller &&
+      controller.class.name == 'WikiController' &&
+      controller.action_name == 'diff' &&
+      @project.module_enabled?(:wiki_diff_alternative) &&
+      @diff.present?
+%>
+<%
+   diff_type = params[:diff_type] || 'inline'
+   version = params[:version]
+   version_from = params[:version_from]
+
+   cache_key = "wiki_diff/#{@wiki.id}/#{@page.id}/" + Digest::MD5.hexdigest("#{version}-#{version_from}-#{diff_type}")
+
+   diff = Rails.cache.fetch(cache_key) do
+     to_unified_wiki_diff(@diff)
+   end
+%>
+
+<div class="scm-diff">
+  <%= form_tag('', method: 'GET') do %>
+  <%= hidden_field_tag('version', version) %>
+  <%= hidden_field_tag('version_from', version_from) %>
+
+  <p>
+    <%= l(:label_view_diff) %>:
+    <label><%= radio_button_tag('diff_type', 'inline', diff_type != 'sbs', onchange: 'this.form.submit()') %>
+      <%= l(:label_diff_inline) %>
+    </label>
+    <label><%= radio_button_tag('diff_type', 'sbs', diff_type == 'sbs', onchange: 'this.form.submit()') %>
+      <%= l(:label_diff_side_by_side) %>
+    </label>
+  </p>
+  <% end %>
+
+  <% cache(cache_key) do %>
+  <%= render :partial => 'common/diff', locals: { diff: diff, diff_type: diff_type, diff_style: 'Subversion' } %>
+  <% end %>
+</div>
+
+<script type="text/javascript">
+  document.addEventListener('DOMContentLoaded', function() {
+    let content = document.getElementById('content');
+    let originDiff = document.querySelector('.text-diff');
+    let newDiff = document.querySelector('.scm-diff');
+    if (content && originDiff && newDiff) {
+      content.replaceChild(newDiff, originDiff);
+    }
+  });
+</script>
+
+<% end %> <!-- if -->

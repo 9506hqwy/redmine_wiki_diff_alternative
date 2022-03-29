@@ -1,7 +1,15 @@
 # frozen_string_literal: true
 
-require_dependency 'wiki_diff_alternative/helper'
-require_dependency 'wiki_diff_alternative/view_listener'
+basedir = File.expand_path('../lib', __FILE__)
+libraries =
+  [
+    'redmine_wiki_diff_alternative/helper',
+    'redmine_wiki_diff_alternative/view_listener',
+  ]
+
+libraries.each do |library|
+  require_dependency File.expand_path(library, basedir)
+end
 
 Redmine::Plugin.register :redmine_wiki_diff_alternative do
   name 'Redmine Wiki Diff Alternative plugin'

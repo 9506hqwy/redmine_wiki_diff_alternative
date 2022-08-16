@@ -1,1 +1,0 @@
-= Redmine Wiki Diff Alternative

@@ -8,8 +8,11 @@ module RedmineWikiDiffAlternative
     def to_unified_wiki_diff(diff)
       from_lines = diff.content_from.text.split("\n")
       to_lines = diff.content_to.text.split("\n")
+      file_length_difference = 0
       hunks = Diff::LCS.diff(from_lines, to_lines).map do |b|
-        Diff::LCS::Hunk.new(from_lines, to_lines, b, 3, 0)
+        hunk = Diff::LCS::Hunk.new(from_lines, to_lines, b, 3, file_length_difference)
+        file_length_difference = hunk.file_length_difference
+        hunk
       end
 
       merge_hunks(hunks).reduce('') { |result, hunk| result + "\n" + hunk.diff(:unified) }

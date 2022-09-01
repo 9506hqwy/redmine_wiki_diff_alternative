@@ -15,13 +15,9 @@ This plugin provides another wiki diff view.
    ```
 2. Install dependency libraries in Redmine directory.
    ```sh
-   bundle install --without development test 
+   bundle install --without development test
    ```
-3. Install plugin in Redmine directory.
-   ```sh
-   bundle exec rake redmine:plugins:migrate NAME=redmine_wiki_diff_alternative RAILS_ENV=production
-   ```
-4. Start Redmine
+3. Start Redmine
 
 ## Configuration
 

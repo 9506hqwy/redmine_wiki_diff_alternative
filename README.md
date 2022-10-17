@@ -6,6 +6,7 @@ This plugin provides another wiki diff view.
 
 - Show wiki inline diff view.
 - Show wiki side by side diff view.
+- Show wiki diff preview for editing (Redmine4.0 or later).
 
 ## Installation
 

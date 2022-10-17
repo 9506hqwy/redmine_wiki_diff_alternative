@@ -8,3 +8,13 @@
 %>
   <%= stylesheet_link_tag('scm') %>
 <% end %> <!-- if -->
+
+<!-- Wiki の Diff Preview 表示 -->
+<%
+   if controller &&
+      controller.class.name == 'WikiController' &&
+      controller.action_name == 'edit' &&
+      @project.module_enabled?(:wiki_diff_alternative)
+%>
+  <%= stylesheet_link_tag('scm') %>
+<% end %> <!-- if -->

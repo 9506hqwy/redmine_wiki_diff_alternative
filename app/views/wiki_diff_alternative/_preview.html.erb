@@ -1,0 +1,6 @@
+<%
+   diff_type = 'inline'
+   diff = to_unified_wiki_diff(@diff)
+%>
+
+<%= render :partial => 'common/diff', locals: { diff: diff, diff_type: diff_type, diff_style: 'Subversion' } %>

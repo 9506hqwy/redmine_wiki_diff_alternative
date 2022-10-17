@@ -51,3 +51,94 @@
 </script>
 
 <% end %> <!-- if -->
+
+<!-- Wiki の Diff Preview 表示 -->
+<%
+   if controller &&
+      controller.class.name == 'WikiController' &&
+      controller.action_name == 'edit' &&
+      @project.module_enabled?(:wiki_diff_alternative)
+
+   url = wiki_diff_preview_project_wiki_page_path(project_id: @project, id: @page.title, version: @page.version)
+%>
+
+<li>
+  <a class="tab-diff-preview" href="#" data-url="<%= escape_javascript(url) %>"><%= l(:label_view_diff) %></a>
+</li>
+<div id="diff_preview_content_text" class="scm-diff hidden">
+<div>
+
+<script type="text/javascript">
+  document.addEventListener('DOMContentLoaded', function() {
+    const editTab = document.querySelector('div.jstTabs .tab-edit');
+    const previewTab = document.querySelector('div.jstTabs .tab-preview');
+    const diffPreviewTab = document.querySelector('.tab-diff-preview');
+    if (previewTab && diffPreviewTab) {
+      previewTab.closest('ul').insertBefore(diffPreviewTab.parentNode, previewTab.parentNode.nextSibling);
+    } else {
+      diffPreviewTab.style.display = 'none';
+    }
+
+    const editContent = document.querySelector('#content_text');
+    const previewContent = document.querySelector('#preview_content_text');
+    const diffPreviewContent = document.querySelector('#diff_preview_content_text');
+    if (previewContent && diffPreviewContent) {
+      previewContent.parentNode.appendChild(diffPreviewContent);
+    } else {
+      diffPreviewContent.style.display = 'none';
+    }
+
+    const postToWikiDiff = (url) => {
+      const text = document.querySelector('textarea#content_text').value;
+      const params = new URLSearchParams();
+      params.append('text', text.replaceAll('\n', '\r\n'));
+
+      const csrf = document.querySelector('input[name="authenticity_token"]').value;
+
+      const option = {
+         method: 'POST',
+         cache: 'no-cache',
+         headers: {
+           'X-CSRF-TOKEN': csrf
+         },
+         body: params
+      };
+      fetch(url, option).then(function(response) {
+        response.text().then(function(text) {
+          diffPreviewContent.innerHTML = text;
+        });
+      });
+    };
+
+    const disableDiffPreviewContent = () => {
+      diffPreviewTab.classList.remove('selected');
+      diffPreviewContent.classList.add('hidden');
+    };
+
+    const enableDiffPreviewContent = (e) => {
+      e.preventDefault();
+
+      if (e.target.classList.contains('selected')) {
+        return;
+      }
+
+      editTab.classList.remove('selected');
+      previewTab.classList.remove('selected');
+      diffPreviewTab.classList.add('selected');
+
+      document.querySelector('div.jstTabs .jstElements').classList.add('hidden');
+
+      editContent.classList.add('hidden');
+      previewContent.classList.add('hidden');
+      diffPreviewContent.classList.remove('hidden');
+
+      postToWikiDiff(e.target.dataset.url);
+    };
+
+    editTab && editTab.parentNode.addEventListener('click', disableDiffPreviewContent);
+    previewTab && previewTab.parentNode.addEventListener('click', disableDiffPreviewContent);
+    diffPreviewTab && diffPreviewTab.addEventListener('click', enableDiffPreviewContent);
+  });
+</script>
+
+<% end %> <!-- if -->

@@ -32,4 +32,13 @@ class WikiTest < Redmine::IntegrationTest
 
     assert_response :success
   end
+
+  def test_wiki_edit
+    log_user('admin', 'admin')
+
+    get('/projects/ecookbook/wiki/CookBook_documentation/edit')
+
+    assert_response :success
+    assert_select 'a.tab-diff-preview'
+  end
 end

@@ -24,6 +24,8 @@ class WikiDiffAlternativeControllerTest < ActionController::TestCase
   end
 
   def test_preview
+    skip unless Redmine::VERSION::MAJOR >= 4
+
     post :preview, params: {
       project_id: @project.id,
       id: @page.title,
@@ -35,6 +37,8 @@ class WikiDiffAlternativeControllerTest < ActionController::TestCase
   end
 
   def test_preview_no_project
+    skip unless Redmine::VERSION::MAJOR >= 4
+
     post :preview, params: {
       project_id: -1,
       id: @page.title,
@@ -46,6 +50,8 @@ class WikiDiffAlternativeControllerTest < ActionController::TestCase
   end
 
   def test_preview_no_page
+    skip unless Redmine::VERSION::MAJOR >= 4
+
     post :preview, params: {
       project_id: @project.id,
       id: 'unknown',
@@ -57,6 +63,8 @@ class WikiDiffAlternativeControllerTest < ActionController::TestCase
   end
 
   def test_preview_no_perm
+    skip unless Redmine::VERSION::MAJOR >= 4
+
     role = Role.find(1)
     role.remove_permission! :edit_wiki_pages
 

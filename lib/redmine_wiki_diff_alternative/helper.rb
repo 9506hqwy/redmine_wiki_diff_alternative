@@ -40,4 +40,7 @@ module RedmineWikiDiffAlternative
   end
 end
 
-WikiHelper.include RedmineWikiDiffAlternative::Helper
+Rails.application.config.after_initialize do
+  WikiController.send(:helper, RedmineWikiDiffAlternative::Helper)
+  WikiDiffAlternativeController.send(:helper, RedmineWikiDiffAlternative::Helper)
+end

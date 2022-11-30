@@ -19,6 +19,8 @@ class WikiDiffAlternativeController < ApplicationController
     render(partial: 'wiki_diff_alternative/preview')
   end
 
+  private
+
   def find_wiki
     @project = Project.find(params[:project_id])
     @wiki = @project.wiki

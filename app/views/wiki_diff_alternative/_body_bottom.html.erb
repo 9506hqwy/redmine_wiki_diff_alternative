@@ -3,6 +3,7 @@
    if controller &&
       controller.class.name == 'WikiController' &&
       controller.action_name == 'diff' &&
+      @project &&
       @project.module_enabled?(:wiki_diff_alternative) &&
       @diff.present?
 %>
@@ -57,6 +58,7 @@
    if controller &&
       controller.class.name == 'WikiController' &&
       controller.action_name == 'edit' &&
+      @project &&
       @project.module_enabled?(:wiki_diff_alternative)
 
    url = wiki_diff_preview_project_wiki_page_path(project_id: @project, id: @page.title, version: @page.version)

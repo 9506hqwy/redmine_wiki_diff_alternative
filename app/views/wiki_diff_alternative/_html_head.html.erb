@@ -3,6 +3,7 @@
    if controller &&
       controller.class.name == 'WikiController' &&
       controller.action_name == 'diff' &&
+      @project &&
       @project.module_enabled?(:wiki_diff_alternative) &&
       @diff.present?
 %>
@@ -14,6 +15,7 @@
    if controller &&
       controller.class.name == 'WikiController' &&
       controller.action_name == 'edit' &&
+      @project &&
       @project.module_enabled?(:wiki_diff_alternative)
 %>
   <%= stylesheet_link_tag('scm') %>

@@ -14,6 +14,11 @@ class WikiDiffAlternativeController < ApplicationController
     version = params[:version]
     content_from = @page.content_for_version(version)
 
+    if params[:section].present? && Redmine::WikiFormatting.supports_section_edit?
+      text_from, hash = Redmine::WikiFormatting.formatter.new(content_from.text).get_section(params[:section].to_i)
+      content_from = WikiContent.new(text: text_from)
+    end
+
     @diff = WikiDiff.new(content_to, content_from)
 
     render(partial: 'wiki_diff_alternative/preview')

@@ -29,7 +29,6 @@ This plugin provides another wiki diff view.
 ## Tested Environment
 
 * Redmine (Docker Image)
-  * 3.4
   * 4.0
   * 4.1
   * 4.2

@@ -39,6 +39,7 @@ This plugin provides another wiki diff view.
   - 5.0
   - 5.1
   - 6.0
+  - 6.1
 - Database
   - SQLite
   - MySQL 5.7 or 8.0
